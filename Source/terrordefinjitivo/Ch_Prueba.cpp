@@ -2,6 +2,7 @@
 
 
 #include "Ch_Prueba.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACh_Prueba::ACh_Prueba()
@@ -32,3 +33,25 @@ void ACh_Prueba::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+void ACh_Prueba::OpenLobby()
+{
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		World->ServerTravel("/game/FirstPerson/Maps/FirstPersonMap?listen");
+	}
+}
+
+void ACh_Prueba::CallOpenLevel(const FString& Address)
+{
+	UGameplayStatics::OpenLevel(this, *Address);
+}
+
+void ACh_Prueba::CallClientTravel(const FString& Address)
+{
+	APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController();
+	if (PlayerController)
+	{
+		PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+	}
+}
